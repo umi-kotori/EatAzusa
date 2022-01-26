@@ -9,10 +9,11 @@ _🦌 修改自xingye大佬作品的网页小游戏 🥛_
 ## 简介
 小游戏：吃掉小阿梓
 
-修改
-  更换阿梓图标、音效
-  设置中增加了静音按钮，暂存在localstorage
-  增加阿梓B站链接
+修改:
+  更换阿梓图标、音效,
+  设置中增加了静音按钮，暂存在localstorage,
+  增加阿梓B站链接。
+  
   线上版本：https://umi-kotori.github.io/EatAzusa/
 
 
