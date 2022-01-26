@@ -1,6 +1,28 @@
 const MODE_NORMAL = 1, MODE_ENDLESS = 2, MODE_PRACTICE = 3;
+myStorage = localStorage
+if (localStorage.getItem('soundPlay') == 1 || localStorage.getItem('soundPlay') == 0) {
+    var soundPlay = localStorage.getItem('soundPlay');
 
-(function(w) {
+    const setBtn = document.getElementById('soundSet')
+    if (soundPlay == 0)  {
+        soundPlay = 0;
+        setBtn.style.backgroundColor = 'rgb(108,117,125)';
+        setBtn.value = '点击开启声音';
+    }
+    else {
+        soundPlay = 1;
+        setBtn.style.backgroundColor = 'rgb(98, 68, 100)';
+        setBtn.value = '点击静音(梓宝太吵了)'
+    }
+    myStorage['soundPlay'] = soundPlay;
+
+}
+else {
+    var soundPlay = 1;
+    localStorage.setItem('soundPlay', soundPlay);
+}
+
+(function (w) {
     let isDesktop = !navigator['userAgent'].match(/(ipad|iphone|ipod|android|windows phone)/i);
     let fontunit = isDesktop ? 20 : ((window.innerWidth > window.innerHeight ? window.innerHeight : window.innerWidth) / 320) * 10;
     document.write('<style type="text/css">' +
@@ -8,7 +30,7 @@ const MODE_NORMAL = 1, MODE_ENDLESS = 2, MODE_PRACTICE = 3;
         (isDesktop ? '#welcome,#GameTimeLayer,#GameLayerBG,#GameScoreLayer.SHADE{position: absolute;}' :
             '#welcome,#GameTimeLayer,#GameLayerBG,#GameScoreLayer.SHADE{position:fixed;}@media screen and (orientation:landscape) {#landscape {display: box; display: -webkit-box; display: -moz-box; display: -ms-flexbox;}}') +
         '</style>');
-    let map = {'d': 1, 'f': 2, 'j': 3, 'k': 4};
+    let map = { 'd': 1, 'f': 2, 'j': 3, 'k': 4 };
     if (isDesktop) {
         document.write('<div id="gameBody">');
         document.onkeydown = function (e) {
@@ -26,12 +48,12 @@ const MODE_NORMAL = 1, MODE_ENDLESS = 2, MODE_PRACTICE = 3;
 
     let mode = MODE_NORMAL;
 
-    w.init = function() {
+    w.init = function () {
         showWelcomeLayer();
         body = document.getElementById('gameBody') || document.body;
         body.style.height = window.innerHeight + 'px';
         transform = typeof (body.style.webkitTransform) != 'undefined' ? 'webkitTransform' : (typeof (body.style.msTransform) !=
-        'undefined' ? 'msTransform' : 'transform');
+            'undefined' ? 'msTransform' : 'transform');
         transitionDuration = transform.replace(/ransform/g, 'ransitionDuration');
         GameTimeLayer = document.getElementById('GameTimeLayer');
         GameLayer.push(document.getElementById('GameLayer1'));
@@ -53,17 +75,17 @@ const MODE_NORMAL = 1, MODE_ENDLESS = 2, MODE_PRACTICE = 3;
         return m === MODE_NORMAL ? "普通模式" : (m === MODE_ENDLESS ? "无尽模式" : "练习模式");
     }
 
-    w.changeMode = function(m) {
+    w.changeMode = function (m) {
         mode = m;
         document.getElementById('mode').innerText = modeToString(m);
     }
 
-    w.readyBtn = function() {
+    w.readyBtn = function () {
         closeWelcomeLayer();
         updatePanel();
     }
 
-    w.winOpen = function() {
+    w.winOpen = function () {
         window.open(location.href + '?r=' + Math.random(), 'nWin', 'height=500,width=320,toolbar=no,menubar=no,scrollbars=no');
         let opened = window.open('about:blank', '_self');
         opened.opener = null;
@@ -135,6 +157,21 @@ const MODE_NORMAL = 1, MODE_ENDLESS = 2, MODE_PRACTICE = 3;
             id: "tap"
         });
         gameRestart();
+    }
+
+    w.soundPlaySet = function () {
+        const setBtn = document.getElementById('soundSet')
+        if (soundPlay) {
+            soundPlay = 0;
+            setBtn.style.backgroundColor = 'rgb(108,117,125)';
+            setBtn.value = '点击开启声音';
+        }
+        else {
+            soundPlay = 1;
+            setBtn.style.backgroundColor = 'rgb(98, 68, 100)';
+            setBtn.value = '点击静音(梓宝太吵了)'
+        }
+        myStorage['soundPlay'] = soundPlay;
     }
 
     function gameRestart() {
@@ -302,7 +339,9 @@ const MODE_NORMAL = 1, MODE_ENDLESS = 2, MODE_PRACTICE = 3;
             if (!_gameStart) {
                 gameStart();
             }
-            createjs.Sound.play("tap");
+            if (soundPlay) {
+                createjs.Sound.play("tap");
+            }
             tar = document.getElementById(p.id);
             tar.className = tar.className.replace(_ttreg, ' tt$1');
             _gameBBListIndex++;
@@ -389,12 +428,12 @@ const MODE_NORMAL = 1, MODE_ENDLESS = 2, MODE_PRACTICE = 3;
         l.style.display = 'none';
     }
 
-    w.replayBtn = function() {
+    w.replayBtn = function () {
         gameRestart();
         hideGameScoreLayer();
     }
 
-    w.backBtn = function() {
+    w.backBtn = function () {
         gameRestart();
         hideGameScoreLayer();
         showWelcomeLayer();
@@ -411,17 +450,17 @@ const MODE_NORMAL = 1, MODE_ENDLESS = 2, MODE_PRACTICE = 3;
         }
 
         if (mode === MODE_ENDLESS) {
-            if (score <= 5) return '试着好好练一下？';
-            if (score <= 8) return 'TCL';
-            if (score <= 10)  return 'TQL';
-            if (score <= 15) return '您';
-            return '人？';
+            if (score <= 5) return '小黑梓说话！';
+            if (score <= 8) return '捏麻麻地';
+            if (score <= 10) return '哎哟！ 滑了';
+            if (score <= 15) return '我超';
+            return '晒！';
         } else {
-            if (score <= 49) return '试着好好练一下？';
-            if (score <= 99) return 'TCL';
-            if (score <= 149) return 'TQL';
-            if (score <= 199) return '您';
-            return '人？';
+            if (score <= 49) return '怎么才' + score + '分呐？ 我还以为' + score + '分呢';
+            if (score <= 99) return '捏麻麻地';
+            if (score <= 149) return '哎哟！ 滑了';
+            if (score <= 199) return '我超';
+            return '晒！';
         }
     }
 
@@ -446,7 +485,7 @@ const MODE_NORMAL = 1, MODE_ENDLESS = 2, MODE_PRACTICE = 3;
             }
             return value = document.cookie.match("(?:^|;)\\s*" + name.replace(/([-.*+?^${}()|[\]\/\\])/g, "\\$1") + "=([^;]*)"),
                 value = value && "string" == typeof value[1] ? unescape(value[1]) : !1, (/^(\{|\[).+\}|\]$/.test(value) ||
-                /^[0-9]+$/g.test(value)) && eval("value=" + value), value;
+                    /^[0-9]+$/g.test(value)) && eval("value=" + value), value;
         }
         let data = {};
         value = document.cookie.replace(/\s/g, "").split(";");
@@ -459,7 +498,7 @@ const MODE_NORMAL = 1, MODE_ENDLESS = 2, MODE_PRACTICE = 3;
     function initSetting() {
         document.getElementById("username").value = cookie("username") ? cookie("username") : "";
         document.getElementById("message").value = cookie("message") ? cookie("message") : "";
-        document.getElementsByTagName("title")[0].innerText = cookie("title") ? cookie("title") : "吃掉小鹿乃";
+        document.getElementsByTagName("title")[0].innerText = cookie("title") ? cookie("title") : "吃掉小阿梓";
         if (cookie("keyboard")) {
             document.getElementById("keyboard").value = cookie("keyboard");
             map = {}
@@ -470,19 +509,19 @@ const MODE_NORMAL = 1, MODE_ENDLESS = 2, MODE_PRACTICE = 3;
         }
     }
 
-    w.show_btn = function() {
+    w.show_btn = function () {
         document.getElementById("btn_group").style.display = "block"
         document.getElementById("setting").style.display = "none"
         document.getElementById("desc").style.display = "block"
     }
 
-    w.show_setting = function() {
+    w.show_setting = function () {
         document.getElementById("btn_group").style.display = "none"
         document.getElementById("setting").style.display = "block"
         document.getElementById("desc").style.display = "none"
     }
 
-    w.save_cookie = function() {
+    w.save_cookie = function () {
         cookie('username', document.getElementById("username").value, 100);
         cookie('message', document.getElementById("message").value, 100);
         cookie('keyboard', document.getElementById("keyboard").value, 100);
@@ -495,7 +534,7 @@ const MODE_NORMAL = 1, MODE_ENDLESS = 2, MODE_PRACTICE = 3;
         return str === '' || str === undefined || str == null;
     }
 
-    w.goRank = function() {
+    w.goRank = function () {
         let name = document.getElementById("username").value;
         let link = './rank.php';
         if (!isnull(name)) {
@@ -532,7 +571,7 @@ const MODE_NORMAL = 1, MODE_ENDLESS = 2, MODE_PRACTICE = 3;
     function saveImage(dom, callback) {
         if (dom.files && dom.files[0]) {
             let reader = new FileReader();
-            reader.onload = function() {
+            reader.onload = function () {
                 callback(this.result);
             }
             reader.readAsDataURL(dom.files[0]);
@@ -540,12 +579,12 @@ const MODE_NORMAL = 1, MODE_ENDLESS = 2, MODE_PRACTICE = 3;
     }
 
 
-    w.getClickBeforeImage = function() {
+    w.getClickBeforeImage = function () {
         const img = document.getElementById('click-before-image');
         img.click();
     }
 
-    w.saveClickBeforeImage = function() {
+    w.saveClickBeforeImage = function () {
         const img = document.getElementById('click-before-image');
         saveImage(img, r => {
             clickBeforeStyle.innerHTML = `
@@ -556,12 +595,12 @@ const MODE_NORMAL = 1, MODE_ENDLESS = 2, MODE_PRACTICE = 3;
         })
     }
 
-    w.getClickAfterImage = function() {
+    w.getClickAfterImage = function () {
         const img = document.getElementById('click-after-image');
         img.click();
     }
 
-    w.saveClickAfterImage = function() {
+    w.saveClickAfterImage = function () {
         const img = document.getElementById('click-after-image');
         saveImage(img, r => {
             clickAfterStyle.innerHTML = `
@@ -571,4 +610,4 @@ const MODE_NORMAL = 1, MODE_ENDLESS = 2, MODE_PRACTICE = 3;
             }`;
         })
     }
-}) (window);
+})(window);
