@@ -1,4 +1,4 @@
-<iframe src="//player.bilibili.com/player.html?aid=423426348&bvid=BV1j3411h72B&cid=490919695&page=1" scrolling="no" border="0" frameborder="no" framespacing="0" allowfullscreen="true"> </iframe>
+
 
 # EatAzusa
 
