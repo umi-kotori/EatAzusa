@@ -456,10 +456,10 @@ else {
             if (score <= 15) return '我超';
             return '晒！';
         } else {
-            if (score <= 49) return '怎么才' + score + '分呐？ 我还以为' + score + '分呢';
-            if (score <= 99) return '捏麻麻地';
-            if (score <= 149) return '哎哟！ 滑了';
-            if (score <= 199) return '我超';
+            if (score <= 49) return '小黑梓说话！';
+            if (score <= 79) return '捏麻麻地';
+            if (score <= 119) return '哎哟！ 滑了';
+            if (score <= 169) return '我超';
             return '晒！';
         }
     }
